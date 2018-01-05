@@ -19,7 +19,7 @@ labels = labeled_images.iloc[0:5000,:1]
 train_images, test_images,train_labels, test_labels = train_test_split(images, labels, train_size=0.8, random_state=0)
 
 #visualizing an image
-i=10
+i=1
 img=train_images.iloc[i].as_matrix()
 img=img.reshape((28,28))
 plt.imshow(img,cmap='gray')
@@ -74,20 +74,24 @@ def numeriser(file):
     pix=im.load()
     ligne=im.size[0]
     colonne=im.size[1]
-    for i in range(0,ligne):
-        for j in range(0,colonne):
+    for j in range(0,ligne):
+        for i in range(0,colonne):
             pixels=pixels+[sum(pix[i,j])/3]
     zz=[tuple(pixels)]
     df = pd.DataFrame.from_records(zz, columns=list(test_data.columns))
     return df
     
 #function to predict an image structured as a dataframe
-def predict_image(df):
-    df[df==0]=1
-    return clf.predict(df)
+def predict_image(df_):
+    df_[df_>0]=1
+    return clf.predict(df_)
     
     
-    
+#function to visualize an image stored as dataframe
+def visualize_image(df):
+    img=df.iloc[0].as_matrix().reshape((28,28))
+    plt.imshow(img,cmap='binary')
+    plt.title(train_labels.iloc[i])
     
     
     
